@@ -38,36 +38,36 @@
         <th></th>
     </tr>
 
-@foreach (var item in Model) {
+@foreach (var post in Model) {
     <tr>
         <td>
-            @Html.DisplayFor(modelItem => item.Title)
+            @Html.DisplayFor(modelItem => post.Title)
         </td>
         <td>
-            @Html.DisplayFor(modelItem => item.Slug)
+            @Html.DisplayFor(modelItem => post.Slug)
         </td>
         <td>
-            @Html.DisplayFor(modelItem => item.Abstract)
+            @Html.DisplayFor(modelItem => post.Abstract)
         </td>
         <td>
-            @Html.DisplayFor(modelItem => item.Body)
+            @Html.DisplayFor(modelItem => post.Body)
         </td>
         <td>
-            @Html.DisplayFor(modelItem => item.MediaUrl)
+            @Html.DisplayFor(modelItem => post.MediaUrl)
         </td>
         <td>
-            @Html.DisplayFor(modelItem => item.Published)
+            @Html.DisplayFor(modelItem => post.Published)
         </td>
         <td>
-            @Html.DisplayFor(modelItem => item.Created)
+            @Html.DisplayFor(modelItem => post.Created)
         </td>
         <td>
-            @Html.DisplayFor(modelItem => item.Updated)
+            @Html.DisplayFor(modelItem => post.Updated)
         </td>
         <td>
-            @Html.ActionLink("Edit", "Edit", new { id=item.Id }) |
-            @Html.ActionLink("Details", "Details", new { slug=item.Slug}) |
-            @Html.ActionLink("Delete", "Delete", new { id=item.Id})
+            @Html.ActionLink("Edit", "Edit", new { id=post.Id }) |
+            @Html.ActionLink("Details", "Details", new { slug=post.Slug}) |
+            @Html.ActionLink("Delete", "Delete", new { id=post.Id})
         </td>
     </tr>
 }
