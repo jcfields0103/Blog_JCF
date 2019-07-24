@@ -1,4 +1,7 @@
-﻿using Blog_JCF.Models;
+﻿using PagedList;
+using PagedList.Mvc;
+using Blog_JCF.Models;
+using Blog_JCF.ViewModel;
 using System;
 using System.Collections.Generic;
 using System.Configuration;
@@ -13,6 +16,7 @@ namespace Blog_JCF.Controllers
 {
     public class HomeController : Controller
     {
+        private ApplicationDbContext db = new ApplicationDbContext();
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> Contact(EmailModel model)
@@ -22,7 +26,7 @@ namespace Blog_JCF.Controllers
                 try
                 {
                     
-                    var from = $"{model.FromName}" + " at " + $"{model.FromEmail}<{WebConfigurationManager.AppSettings["emailto"]}>";
+                    var from = $"{model.FromName} at {model.FromEmail}<{WebConfigurationManager.AppSettings["emailto"]}>";
 
                     var email = new MailMessage(from,
                         WebConfigurationManager.AppSettings["emailto"])
@@ -47,9 +51,21 @@ namespace Blog_JCF.Controllers
         }
         public ActionResult Index()
         {
-            return View();
-        }
+         
+            var posts = db.BlogPosts.Where(b => b.Published).OrderByDescending(b => b.Created).Take(6).ToList();
 
+            var myLandingPageVM = new LandingPageVM
+            {
+                TopLeftPost = posts.FirstOrDefault(),
+                TopRightPost = posts.Skip(1).FirstOrDefault(),
+                MidLeftPost = posts.Skip(2).FirstOrDefault(),
+                MidRightPost = posts.Skip(3).FirstOrDefault(),
+                BotLeftPost = posts.Skip(4).FirstOrDefault(),
+                BotRightPost = posts.LastOrDefault()
+            };
+            
+            return View(myLandingPageVM);
+        }
         public ActionResult About()
         {
             ViewBag.Message = "Your application description page.";

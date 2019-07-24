@@ -6,14 +6,14 @@ namespace Blog_JCF.Migrations
     using System.Data.Entity.Migrations;
     using System.Linq;
 
-    internal sealed class Configuration : DbMigrationsConfiguration<Blog_JCF.Models.ApplicationDbContext>
+    internal sealed class Configuration : DbMigrationsConfiguration<ApplicationDbContext>
     {
         public Configuration()
         {
             AutomaticMigrationsEnabled = true;
         }
 
-        protected override void Seed(Blog_JCF.Models.ApplicationDbContext context)
+        protected override void Seed(ApplicationDbContext context)
         {
             var roleManager = new RoleManager<IdentityRole>(
                 new RoleStore<IdentityRole>(context));
@@ -38,20 +38,20 @@ namespace Blog_JCF.Migrations
                     DisplayName = "JCFields",
                 }, "Abc&123!");
           
-            if (!context.Users.Any(u => u.Email == "JTwitchell@mailinator.com"))
+            if (!context.Users.Any(u => u.Email == "JTwichell@mailinator.com"))
                 userManager.Create(new ApplicationUser
                 {
-                    UserName = "JTwitchell@mailinator.com",
-                    Email = "JTwitchell@mailinator.com",
+                    UserName = "JTwichell@mailinator.com",
+                    Email = "JTwichell@mailinator.com",
                     FirstName = "Jason",
                     LastName = "Twichell",
                     DisplayName = "Twich",
                 }, "Abc&123!");
 
-            var userId = userManager.FindByEmail("Jcfields@Mailinator.com").Id;
+            var userId = userManager.FindByEmail("JCFields@mailinator.com").Id;
             userManager.AddToRole(userId, "Admin");
 
-            userId = userManager.FindByEmail("JTwichell@Mailinator.com").Id;
+            userId = userManager.FindByEmail("JTwichell@mailinator.com").Id;
             userManager.AddToRole(userId, "Moderator");
         }
     }

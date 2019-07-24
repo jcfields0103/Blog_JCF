@@ -1,4 +1,5 @@
-﻿using System;
+﻿
+using System;
 using System.Data.Entity;
 using System.Linq;
 using System.Net;
@@ -15,7 +16,7 @@ namespace Blog_JCF.Controllers
         // GET: BlogPosts
         public ActionResult Index()
         {
-            return View(db.BlogPosts.ToList());
+                     return View(db.BlogPosts.ToList());
         }
 
         // GET: BlogPosts/Details/5

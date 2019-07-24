@@ -1,16 +1,75 @@
 ﻿
-@model IEnumerable<Blog_JCF.Models.BlogPost>
+@model Blog_JCF.ViewModel.LandingPageVM
 
-<div class="container">
-    <div class="row">
-        <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
-          
-            <div class="post-preview">
-                    
+    <header class="intro-header" style="background-image: url(/img/home-bg.jpg)">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                    <div class="site-heading">
+                        <h1>Clean Blog</h1>
+                        <hr class="small">
+                        <span class="subheading">A Clean Blog Theme by Start Bootstrap</span>
+                    </div>
+                </div>
             </div>
-            
-            <hr>
-          
+        </div>
+    </header>
+    <div class="container">
+        <div class="row">
+            <div class="col-md-6">
+                <a href="/Views/BlogPosts/Details.cshtml">
+                    <div class="text">
+                        <h2>@Model.TopLeftPost.Title</h2>
+                        <span>@Model.TopLeftPost.Created.ToString("MMMM d,yyyy")</span>
+                    </div>
+                </a>
+            </div>
+            <div class="col-md-6">
+                <a href="/Views/BlogPosts/Details.cshtml">
+                    <div class="text">
+                        <h2>@Model.TopRightPost.Title</h2>
+                        <span>@Model.TopRightPost.Created.ToString("MMMM d,yyyy")</span>
+                    </div>
+                </a>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-6">
+                <a href="/Views/BlogPosts/Details.cshtml">
+                    <div class="text">
+                        <h2>@Model.MidLeftPost.Title</h2>
+                        <span>@Model.MidLeftPost.Created.ToString("MMMM d,yyyy")</span>
+                    </div>
+                </a>
+            </div>
+            <div class="col-md-6">
+                <a href="/Views/BlogPosts/Details.cshtml">
+                    <div class="text">
+                        <h2>@Model.MidRightPost.Title</h2>
+                        <span>@Model.MidRightPost.Created.ToString("MMMM d,yyyy")</span>
+                    </div>
+                </a>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-6">
+                <a href="/Views/BlogPosts/Details.cshtml">
+                    <div class="text">
+                        <h2>@Model.BotLeftPost.Title</h2>
+                        <span>@Model.BotLeftPost.Created.ToString("MMMM d,yyyy")</span>
+                    </div>
+                </a>
+            </div>
+            <div class="col-md-6">
+                <a href="/Views/BlogPosts/Details.cshtml">
+                    <div class="text">
+                        <h2>@Model.BotRightPost.Title</h2>
+                        <span>@Model.BotRightPost.Created.ToString("MMMM d,yyyy")</span>
+                    </div>
+                </a>
+            </div>
+        </div>
+        <div class="row">
             <!-- Pager -->
             <ul class="pager">
                 <li class="next">
@@ -19,6 +78,6 @@
             </ul>
         </div>
     </div>
-</div>
+
 
 <hr>
