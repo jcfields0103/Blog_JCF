@@ -13,6 +13,7 @@ using Blog_JCF.Utilities;
 namespace Blog_JCF.Controllers
 {
     [Authorize(Roles = "Admin")]
+    [RequireHttps]
     public class BlogPostsController : Controller
     {
         private ApplicationDbContext db = new ApplicationDbContext();

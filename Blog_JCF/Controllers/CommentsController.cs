@@ -10,6 +10,7 @@ using Blog_JCF.Models;
 
 namespace Blog_JCF.Controllers
 {
+    [RequireHttps]
     public class CommentsController : Controller
     {
         private ApplicationDbContext db = new ApplicationDbContext();
