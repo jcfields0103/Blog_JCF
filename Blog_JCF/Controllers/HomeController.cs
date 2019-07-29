@@ -1,7 +1,6 @@
 ﻿using PagedList;
 using PagedList.Mvc;
 using Blog_JCF.Models;
-using Blog_JCF.ViewModel;
 using System;
 using System.Collections.Generic;
 using System.Configuration;
@@ -49,23 +48,51 @@ namespace Blog_JCF.Controllers
             }
             return View(model);
         }
-        public ActionResult Index()
+        public ActionResult Index(int? page, string searchStr)
         {
-         
+            ViewBag.Search = searchStr;
+            var blogList = IndexSearch(searchStr).Where(b => b.Published).OrderByDescending(b => b.Created);
+
+            int pageSize = 6;
+            int pageNumber = page ?? 1;
+            var listPosts = db.BlogPosts.AsQueryable();
             var posts = db.BlogPosts.Where(b => b.Published).OrderByDescending(b => b.Created).Take(6).ToList();
 
-            var myLandingPageVM = new LandingPageVM
-            {
-                TopLeftPost = posts.FirstOrDefault(),
-                TopRightPost = posts.Skip(1).FirstOrDefault(),
-                MidLeftPost = posts.Skip(2).FirstOrDefault(),
-                MidRightPost = posts.Skip(3).FirstOrDefault(),
-                BotLeftPost = posts.Skip(4).FirstOrDefault(),
-                BotRightPost = posts.LastOrDefault()
-            };
+            //var myLandingPageVM = new LandingPageVM
+            //{
+            //    TopLeftPost = posts.FirstOrDefault(),
+            //    TopRightPost = posts.Skip(1).FirstOrDefault(),
+            //    MidLeftPost = posts.Skip(2).FirstOrDefault(),
+            //    MidRightPost = posts.Skip(3).FirstOrDefault(),
+            //    BotLeftPost = posts.Skip(4).FirstOrDefault(),
+            //    BotRightPost = posts.LastOrDefault()
+            //};
             
-            return View(myLandingPageVM);
+            return View(blogList.ToPagedList(pageNumber, pageSize));
         }
+
+        private IQueryable<BlogPost> IndexSearch(string searchStr)
+        {
+            IQueryable<BlogPost> result = null;
+            if (searchStr !=null)
+            {
+                result = db.BlogPosts.AsQueryable();
+                result = result.Where(p => p.Title.Contains(searchStr) ||
+                                        p.Body.Contains(searchStr) ||
+                                        p.Comments.Any(c => c.Body.Contains(searchStr) ||
+                                                        c.Author.FirstName.Contains(searchStr) ||
+                                                        c.Author.LastName.Contains(searchStr) ||
+                                                        c.Author.DisplayName.Contains(searchStr) ||
+                                                        c.Author.Email.Contains(searchStr)));
+            }
+            else
+            {
+                result = db.BlogPosts.AsQueryable();
+            }
+            return result.OrderByDescending(p => p.Created);
+
+        }
+
         public ActionResult About()
         {
             ViewBag.Message = "Your application description page.";

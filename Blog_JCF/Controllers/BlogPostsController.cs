@@ -1,10 +1,14 @@
 ﻿
 using System;
 using System.Data.Entity;
+using System.Drawing;
+using System.IO;
 using System.Linq;
 using System.Net;
+using System.Web;
 using System.Web.Mvc;
 using Blog_JCF.Models;
+using Blog_JCF.Utilities;
 
 namespace Blog_JCF.Controllers
 {
@@ -48,7 +52,7 @@ namespace Blog_JCF.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "Title,Abstract,Body,Published")] BlogPost blogPost)
+        public ActionResult Create([Bind(Include = "Title,Abstract,Body,MediaUrl,Published")] BlogPost blogPost, HttpPostedFileBase image)
         {
             if (ModelState.IsValid)
             {
@@ -64,7 +68,15 @@ namespace Blog_JCF.Controllers
                     return View(blogPost);
                 }
 
+                if (ImageUploadValidator.IsWebFriendlyImage(image))
+                {
+                    var fileName = Path.GetFileName(image.FileName);
+                    image.SaveAs(Path.Combine(Server.MapPath("~/Uploads/"), fileName));
+                    blogPost.MediaUrl = "/Uploads/" + fileName;
+                }
+
                 blogPost.Slug = Slug;
+
                 blogPost.Created = DateTimeOffset.Now;
                 db.BlogPosts.Add(blogPost);
                 db.SaveChanges();
@@ -94,7 +106,7 @@ namespace Blog_JCF.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "Id,Title,Slug,Abstract,Body,MediaUrl,Published,Created,Updated")] BlogPost blogPost)
+        public ActionResult Edit([Bind(Include = "Id,Title,Slug,Abstract,Body,MediaUrl,Published,Created,Updated")] BlogPost blogPost, HttpPostedFileBase image)
         {
             if (ModelState.IsValid)
             {
@@ -113,6 +125,13 @@ namespace Blog_JCF.Controllers
                         return View(blogPost);
                     }
                     blogPost.Slug = newSlug;
+                }
+
+                if (ImageUploadValidator.IsWebFriendlyImage(image))
+                {
+                    var fileName = Path.GetFileName(image.FileName);
+                    image.SaveAs(Path.Combine(Server.MapPath("~/Uploads/"), fileName));
+                    blogPost.MediaUrl = "/Uploads/" + fileName;
                 }
                 blogPost.Slug = newSlug;
 

@@ -1,14 +1,19 @@
 ﻿
-@model Blog_JCF.ViewModel.LandingPageVM
+@using Blog_JCF.Models;
+@using PagedList;
+@using PagedList.Mvc
 
-    <header class="intro-header" style="background-image: url(/img/home-bg.jpg)">
+@model IPagedList<BlogPost>
+
+
+    <header class="intro-header" style="background-image: url(/img/post-sample-image.jpg)">
         <div class="container">
             <div class="row">
                 <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
                     <div class="site-heading">
-                        <h1>Clean Blog</h1>
+                        <h1>Caleb's Code Blog</h1>
                         <hr class="small">
-                        <span class="subheading">A Clean Blog Theme by Start Bootstrap</span>
+                        <span class="subheading">A chronicle of a quest for knowledge</span>
                     </div>
                 </div>
             </div>
@@ -16,68 +21,27 @@
     </header>
     <div class="container">
         <div class="row">
-            <div class="col-md-6">
-                <a href="/Views/BlogPosts/Details.cshtml">
-                    <div class="text">
-                        <h2>@Model.TopLeftPost.Title</h2>
-                        <span>@Model.TopLeftPost.Created.ToString("MMMM d,yyyy")</span>
-                    </div>
-                </a>
+            
+            @foreach (var post in Model)
+            {
+                <div class="col-md-6">
+                    <a href= "@Url.Action("Details", "BlogPosts", new { slug = post.Slug })">
+                        <div class="text">
+                            <h2>@post.Title</h2>
+                            <span>@post.Created.ToString("MMMM d,yyyy")</span>
+                        </div>
+                    </a>
+                </div>
+            }
             </div>
-            <div class="col-md-6">
-                <a href="/Views/BlogPosts/Details.cshtml">
-                    <div class="text">
-                        <h2>@Model.TopRightPost.Title</h2>
-                        <span>@Model.TopRightPost.Created.ToString("MMMM d,yyyy")</span>
-                    </div>
-                </a>
-            </div>
-        </div>
+        <hr />
         <div class="row">
-            <div class="col-md-6">
-                <a href="/Views/BlogPosts/Details.cshtml">
-                    <div class="text">
-                        <h2>@Model.MidLeftPost.Title</h2>
-                        <span>@Model.MidLeftPost.Created.ToString("MMMM d,yyyy")</span>
-                    </div>
-                </a>
-            </div>
-            <div class="col-md-6">
-                <a href="/Views/BlogPosts/Details.cshtml">
-                    <div class="text">
-                        <h2>@Model.MidRightPost.Title</h2>
-                        <span>@Model.MidRightPost.Created.ToString("MMMM d,yyyy")</span>
-                    </div>
-                </a>
-            </div>
-        </div>
-        <div class="row">
-            <div class="col-md-6">
-                <a href="/Views/BlogPosts/Details.cshtml">
-                    <div class="text">
-                        <h2>@Model.BotLeftPost.Title</h2>
-                        <span>@Model.BotLeftPost.Created.ToString("MMMM d,yyyy")</span>
-                    </div>
-                </a>
-            </div>
-            <div class="col-md-6">
-                <a href="/Views/BlogPosts/Details.cshtml">
-                    <div class="text">
-                        <h2>@Model.BotRightPost.Title</h2>
-                        <span>@Model.BotRightPost.Created.ToString("MMMM d,yyyy")</span>
-                    </div>
-                </a>
-            </div>
-        </div>
-        <div class="row">
+            <div class="col-md-12 text-center">
             <!-- Pager -->
-            <ul class="pager">
-                <li class="next">
-                    <a href="#">Older Posts &rarr;</a>
-                </li>
-            </ul>
+            Page @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) of @Model.PageCount
+            @Html.PagedListPager(Model, page => Url.Action("Index", new { page, searchStr = ViewBag.Search }))
+             </div>
         </div>
     </div>
 
 
-<hr>

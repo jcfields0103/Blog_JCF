@@ -9,7 +9,7 @@
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title>Clean Blog</title>
+    <title>Caleb Fields</title>
 
     <!-- Bootstrap Core CSS -->
     
@@ -45,20 +45,55 @@
                     <span class="sr-only">Toggle navigation</span>
                     Menu <i class="fa fa-bars"></i>
                 </button>
-                
+                @using (Html.BeginForm("Index","Home",FormMethod.Get, htmlAttributes:new {@class="form"}))
+                {
+                    <div class="controls controls-row search-row">
+                        <input id="searchStr" name="searchStr" class="input-block-level" type="text" placeholder="Search" />
+                        <button id="searchStr" name="searchStr" class="btn btn-success" type="submit">
+                           Go!
+                        </button>
+                    </div>
+                }
             </div>
 
             <!-- Collect the nav links, forms, and other content for toggling -->
             <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+               
                 <ul class="nav navbar-nav navbar-right">
                     <li>
-                        @Html.ActionLink("Home","Index","Home")
+                        @Html.ActionLink("Home", "Index", "Home")
                     </li>
                     <li>
                         @Html.ActionLink("About", "About", "Home")
                     </li>
                     <li>
                         @Html.ActionLink("Contact", "Contact", "Home")
+                    </li>
+                    @{
+                        if (!User.Identity.IsAuthenticated)
+                        {
+                            <li>
+                                @Html.ActionLink("Register", "Register", "Account")
+                            </li>
+                            <li>
+                                @Html.ActionLink("Log In", "Login", "Account")
+                            </li>
+                        }
+                        else
+                        {
+                            <li>
+                                @Html.ActionLink("Log Off","LogOff","Account",null, new { @class = "nav-link", id = "logoutForm" })
+                            </li>
+                        }
+                        if (User.IsInRole ("Admin"))
+                        {
+                            <li>
+                                @Html.ActionLink("Create or Edit Posts","Index","blogposts")
+                            </li>
+                        }
+                    }
+                    <li>
+
                     </li>
                 </ul>
             </div>
@@ -106,7 +141,7 @@
                             </a>
                         </li>
                     </ul>
-                    <p class="copyright text-muted">Copyright &copy; Your Website 2016</p>
+                    
                 </div>
             </div>
         </div>

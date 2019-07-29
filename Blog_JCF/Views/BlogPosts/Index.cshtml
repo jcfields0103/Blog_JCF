@@ -50,7 +50,7 @@
             @Html.DisplayFor(modelItem => post.Abstract)
         </td>
         <td>
-            @Html.DisplayFor(modelItem => post.Body)
+            @Html.Raw(post.Body)
         </td>
         <td>
             @Html.DisplayFor(modelItem => post.MediaUrl)
