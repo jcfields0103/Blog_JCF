@@ -12,10 +12,10 @@
     <div class="container">
         <div class="row">
             <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
-                <div class="post-heading">
+                <div class="post-heading text-center">
                     <h1>@Html.DisplayFor(model => model.Title)</h1>
                     <h2 class="subheading">@Html.DisplayFor(model => model.Abstract)</h2>
-                    <span class="meta">Posted by Caleb Fields on @Html.DisplayFor(model => model.Created)</span>
+                    @*<span class="meta">Posted by Caleb Fields on @Html.DisplayFor(model => model.Created)</span>*@
                 </div>
             </div>
         </div>
@@ -26,7 +26,7 @@
     <!-- Post Content -->
     <article>
         <div class="container">
-            <div class="row">
+            <div class="row text-center">
                 <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
                 @Html.Raw(Model.Body)
                 </div>
