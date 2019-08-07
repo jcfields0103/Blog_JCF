@@ -222,6 +222,7 @@
     <Content Include="fonts\fontawesome-webfont.woff2" />
     <Content Include="fonts\FontAwesome.otf" />
     <Content Include="private.config" />
+    <Content Include="favicon.heic" />
     <None Include="Properties\PublishProfiles\CalebsBlog - Web Deploy.pubxml" />
     <None Include="Scripts\jquery-3.3.1.intellisense.js" />
     <Content Include="Scripts\clean-blog.js" />

@@ -25,7 +25,7 @@
             @foreach (var post in Model)
             {
                 <div class="col-md-6">
-                    <a href= "@Url.Action("Details", "BlogPosts", new { slug = post.Slug })">
+                    <a href= "@Url.Action("Details","BlogPosts", new { slug = post.Slug })">
                         <div class="text">
                             <h2>@post.Title</h2>
                             <span>@post.Created.ToString("MMMM d,yyyy")</span>
