@@ -22,7 +22,6 @@ namespace Blog_JCF.Utilities
                     return ImageFormat.Jpeg.Equals(img.RawFormat) ||
                            ImageFormat.Png.Equals(img.RawFormat) ||
                            ImageFormat.Bmp.Equals(img.RawFormat) ||
-                           ImageFormat.Tiff.Equals(img.RawFormat) ||
                            ImageFormat.Gif.Equals(img.RawFormat);
                 }
             }

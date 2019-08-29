@@ -7,6 +7,7 @@ using System.Net;
 using System.Web;
 using System.Web.Mvc;
 using Blog_JCF.Models;
+using Microsoft.AspNet.Identity;
 
 namespace Blog_JCF.Controllers
 {
@@ -38,6 +39,7 @@ namespace Blog_JCF.Controllers
         }
 
         // GET: Comments/Create
+        [AllowAnonymous]
         public ActionResult Create()
         {
             ViewBag.AuthorId = new SelectList(db.Users, "Id", "FirstName");
@@ -50,13 +52,17 @@ namespace Blog_JCF.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "Id,BlogPostId,AuthorId,Body,Created,Updated,UpdateReason")] Comment comment)
+        [AllowAnonymous]
+        public ActionResult Create([Bind(Include = "BlogPostId")] Comment comment, string commentBody, string slug)
         {
             if (ModelState.IsValid)
             {
+                comment.Body = commentBody;
+                comment.AuthorId = User.Identity.GetUserId();
+                comment.Created = DateTime.Now;
                 db.Comments.Add(comment);
                 db.SaveChanges();
-                return RedirectToAction("Index");
+                return RedirectToAction("Details","BlogPosts", new {slug = slug});
             }
 
             ViewBag.AuthorId = new SelectList(db.Users, "Id", "FirstName", comment.AuthorId);
@@ -65,6 +71,7 @@ namespace Blog_JCF.Controllers
         }
 
         // GET: Comments/Edit/5
+        [AllowAnonymous]
         public ActionResult Edit(int? id)
         {
             if (id == null)
@@ -86,13 +93,21 @@ namespace Blog_JCF.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "Id,BlogPostId,AuthorId,Body,Created,Updated,UpdateReason")] Comment comment)
+        [AllowAnonymous]
+        public ActionResult Edit([Bind(Include = "Id,BlogPostId,AuthorId,Body,Created,Updated,UpdateReason")] Comment comment, string slug)
         {
+            if (string.IsNullOrEmpty(comment.UpdateReason))
+            {
+                ModelState.AddModelError("UpdateReason", "You must provide an update reason.");
+                comment.BlogPost = db.BlogPosts.AsNoTracking().FirstOrDefault(b => b.Id == comment.BlogPostId);
+                return View(comment);
+            }
             if (ModelState.IsValid)
             {
+                comment.Updated = DateTime.Now;
                 db.Entry(comment).State = EntityState.Modified;
                 db.SaveChanges();
-                return RedirectToAction("Index");
+                return RedirectToAction("Details", "Blogposts", new { slug = slug });
             }
             ViewBag.AuthorId = new SelectList(db.Users, "Id", "FirstName", comment.AuthorId);
             ViewBag.BlogPostId = new SelectList(db.BlogPosts, "Id", "Title", comment.BlogPostId);
@@ -100,6 +115,7 @@ namespace Blog_JCF.Controllers
         }
 
         // GET: Comments/Delete/5
+        [AllowAnonymous]
         public ActionResult Delete(int? id)
         {
             if (id == null)
@@ -117,12 +133,14 @@ namespace Blog_JCF.Controllers
         // POST: Comments/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
+        [AllowAnonymous]
         public ActionResult DeleteConfirmed(int id)
         {
             Comment comment = db.Comments.Find(id);
+            var slug = comment.BlogPost.Slug;
             db.Comments.Remove(comment);
             db.SaveChanges();
-            return RedirectToAction("Index");
+            return RedirectToAction("Details","Blogposts",new { slug = slug });
         }
 
         protected override void Dispose(bool disposing)

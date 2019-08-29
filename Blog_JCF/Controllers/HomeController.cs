@@ -59,16 +59,7 @@ namespace Blog_JCF.Controllers
             var listPosts = db.BlogPosts.AsQueryable();
             var posts = db.BlogPosts.Where(b => b.Published).OrderByDescending(b => b.Created).Take(6).ToList();
 
-            //var myLandingPageVM = new LandingPageVM
-            //{
-            //    TopLeftPost = posts.FirstOrDefault(),
-            //    TopRightPost = posts.Skip(1).FirstOrDefault(),
-            //    MidLeftPost = posts.Skip(2).FirstOrDefault(),
-            //    MidRightPost = posts.Skip(3).FirstOrDefault(),
-            //    BotLeftPost = posts.Skip(4).FirstOrDefault(),
-            //    BotRightPost = posts.LastOrDefault()
-            //};
-            
+           
             return View(blogList.ToPagedList(pageNumber, pageSize));
         }
 
